@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Optimonk plugin for Magento 1.7+
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * For a copy of the GNU General Public License, see <http://www.gnu.org/licenses/>.
+ *
+ * @package     Wse_OptiMonk
+ * @copyright   Copyright (c) 2016 Webshop Marketing Kft (www.optimonk.com)
+ * @license     https://www.gnu.org/licenses/gpl-3.0.html GNU GENERAL PUBLIC LICENSE (GPL 3.0)
+ * @author      Tibor Berna
+ */
+-->
+<config>
+    <modules>
+        <Wse_OptiMonk>
+            <version>0.1.0</version>
+        </Wse_OptiMonk>
+    </modules>
+
+    <global>
+        <blocks>
+            <optimonk>
+                <class>Wse_OptiMonk_Block</class>
+            </optimonk>
+        </blocks>
+        <helpers>
+            <optimonk>
+                <class>Wse_OptiMonk_Helper</class>
+            </optimonk>
+        </helpers>
+        <models>
+            <optimonk>
+                <class>Wse_OptiMonk_Model</class>
+            </optimonk>
+        </models>
+    </global>
+
+    <frontend>
+        <routers>
+            <optimonk>
+                <use>standard</use>
+                <args>
+                    <module>Wse_OptiMonk</module>
+                    <frontName>optimonk</frontName>
+                </args>
+            </optimonk>
+        </routers>
+        <layout>
+            <updates>
+                <optimonk>
+                    <file>optimonk.xml</file>
+                </optimonk>
+            </updates>
+        </layout>
+        <events>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <optimonk_observer>
+                        <type>singleton</type>
+                        <class>Wse_OptiMonk_Model_Observer</class>
+                        <method>coreBlockAbstractToHtmlAfter</method>
+                    </optimonk_observer>
+                </observers>
+            </core_block_abstract_to_html_after>
+        </events>
+    </frontend>
+
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <optimonk translate="title" module="optimonk">
+                                            <title>optimonk</title>
+                                        </optimonk>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <events>
+            <admin_system_config_changed_section_optimonk>
+                <observers>
+                    <optimonk_observer>
+                        <type>singleton</type>
+                        <class>Wse_OptiMonk_Model_Observer</class>
+                        <method>sendDataToOptimonk</method>
+                    </optimonk_observer>
+                </observers>
+            </admin_system_config_changed_section_optimonk>
+        </events>
+    </adminhtml>
+
+    <default>
+        <optimonk>
+            <settings>
+                <active>0</active>
+            </settings>
+        </optimonk>
+    </default>
+</config>
